@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { FormEvent } from "react";
 import type { DictionaryEntry } from "../../domain/DictionaryEntry";
 import { searchDictionaryWithMockData } from "../../application/searchDictionaryService";
+import { CharacterToolbar } from "../../../../shared/components/CharacterToolbar";
 
 export function SearchPage() {
   const [query, setQuery] = useState("");
   const [searchedQuery, setSearchedQuery] = useState("");
   const [results, setResults] = useState<DictionaryEntry[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   async function handleSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -38,20 +40,28 @@ export function SearchPage() {
         Search Rotuman words, meanings, and examples.
       </p>
 
-      <form onSubmit={handleSearch} className="mt-6 flex gap-3">
-        <input
-          type="search"
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          placeholder="Type a word or meaning..."
-          className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-slate-900 shadow-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+      <form onSubmit={handleSearch} className="mt-6">
+        <div className="flex gap-3">
+          <input
+            ref={searchInputRef}
+            type="search"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Type a word or meaning..."
+            className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-slate-900 shadow-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+          />
+          <button
+            type="submit"
+            className="rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300"
+          >
+            Search
+          </button>
+        </div>
+
+        <CharacterToolbar
+          targetRef={searchInputRef}
+          onInsert={(nextValue) => setQuery(nextValue)}
         />
-        <button
-          type="submit"
-          className="rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300"
-        >
-          Search
-        </button>
       </form>
 
       {isLoading && (
