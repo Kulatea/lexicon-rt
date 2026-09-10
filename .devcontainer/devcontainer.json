@@ -1,6 +1,6 @@
 {
   "name": "lexicon-rt",
-  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-24-bookworm",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:24-bookworm",
   "postCreateCommand": "npm install",
   "postStartCommand": "nohup npm run dev -- --host 0.0.0.0 > /tmp/lexicon-vite.log 2>&1 &",
   "forwardPorts": [5173],
